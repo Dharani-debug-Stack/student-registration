@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Details Task</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <style>
+     
+    .loader {
+      border-top-color: #60A5FA;
+      animation: spin 1s linear infinite;
+    }
+   
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    #showSave{
+     animation: slideRight 2s ease-in-out;
+    }
+    @keyframes slideRight {
+      0%{
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      50%{
+        transform: translateX(0);
+        opacity: 1;
+      }
+      
+      100%{
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+  </style>
+</head>
+<body class="bg-white min-h-screen">
+
+  <!-- Loading Screen-->
+  <div id="loading" class="flex items-center justify-center h-screen bg-gradient-to-br from-blue-400 to-green-400">
+    <div class="text-center">
+      <div class="loader ease-linear rounded-full border-8 border-t-8 border-blue-100 h-24 w-24 mx-auto mb-4"></div>
+      <h1 class="text-white text-xl font-semibold">Loading Student Details Task...</h1>
+      <p class="text-white mt-2 text-sm">Please wait while the system is initializing.</p>
+    </div>
+  </div> 
+
+<!--  class="hidden" -->
+   <div id="mainContent">
+    <div class="text-center bg-gradient-to-r from-blue-400 to-green-400 pt-10 pb-6">
+      <h1 class="font-bold text-2xl text-white">STUDENT DETAILS TASK</h1>
+    </div>
+    <!-- student table -->
+    <div class="flex flex-col items-center">
+      <div class=" m-9 shadow-2xl gap-3 rounded-xl  space-y-4 p-12">
+      <div class="flex gap-1 justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 text-blue-500 ">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+</svg>
+
+        <h1 class="text-2xl"></h1>STUDENT FORM</h1>
+        </div>
+        
+      <form >
+        <table class="w-full  border-separate">
+          <!-- Name -->
+          <tr>
+            <td> Name</td>
+             <td ><input id="stuName" type="text"  placeholder="Enter Your Name" class=" outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100" ></td>
+            </tr>
+            <!-- Age -->
+          <tr>
+            <td>Age</td>
+            <td><input id="age" type="number" placeholder="Enter Your Age" class="outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100 "></td>
+          </tr>
+          <!-- Gender -->
+          <tr>
+            <td>Gender</td>
+            <td><input type="radio" name="one" value="Male">Male <input type="radio" name="one" value="Female">Female</td>
+          </tr>
+          <!-- Courses -->
+          <tr>
+            <td>Course</td>
+            <td >
+              <select id="course"  class="outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100 ">
+            <option value="JavaScript">Javascript</option>
+            <option value="Java">Java</option>
+            <option value="Python">Python</option>
+          </select>
+        </td>
+      </tr>
+      <!-- Email -->
+          <tr>
+            <td>Email</td>
+            <td>
+              <input id="mail" type="email" placeholder="Enter your Email" class="outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100  "></td>
+            </tr>
+            <!-- Save -->
+          <tr>
+            <td colspan="2">
+              <button id="save" type="button" class="text-center bg-gradient-to-r from-blue-500 to-green-400 w-full cursor-pointer" onclick="show()"> Save</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Show Saved Container -->
+   <div class=" header hidden flex flex-col flex-wrap items-center">
+     <table class="table-auto border border-collapse rounded-xl  text-center shadow-2xl">
+
+      <div class="flex items-center gap-2 mb-2">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5">
+  <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+  <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+  <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+</svg>
+          <h1>STUDENT RECORDS</h1></div>
+
+        <thead>
+      <tr class="space-x-4">
+        <th class=" text-blue-400 p-4 mb-2">NAME</th>
+        <th class=" text-purple-500 p-4 mb-2">AGE</th>
+        <th class=" text-purple-500 p-4 mb-2">GENDER</th>
+        <th class=" text-purple-500 p-4 mb-2">COURSE</th>
+        <th class="  text-purple-500 p-4 mb-2">EMAIL</th>
+        <th class=" text-purple-500 p-4 mb-2">Action</th>
+        
+      </tr>
+      </thead>
+      <tbody id="savedStudent">
+        
+     
+      </tbody>
+    </table>
+   
+  </div>
+   
+
+  <!-- Saved Sucessfully -->
+   <div id="showSave"class="hidden bg-green-400 text-white p-4 inline-block rounded-xl absolute top-7">
+    <h2><i class="fa-solid fa-check" style="color: #f4f7fa;"></i> Saved Successfully</h2>
+   </div>
+
+
+
+  <!-- JavaScript to switch from loading to main -->
+  <script>
+    setTimeout(function () {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("mainContent").classList.remove("hidden");
+    }, 2000); // 3 seconds delay
+
+    let saveButton=document.getElementById("save")
+    let displaySave=document.getElementById("showSave")
+    saveButton.addEventListener("click",function()
+  {
+    displaySave.classList.remove("hidden")
+    displaySave.style.animation="slideRight 1s ease-in-out"
+    setTimeout(function () {
+      displaySave.classList.add("hidden")
+  
+    },2000)
+    
+  })
+ 
+  // Saved students
+  function show(){
+  var selectHead=document.querySelector(".header")
+  var show=document.getElementById("savedStudent")
+  var studendName=document.getElementById("stuName").value 
+  var studentAge=document.getElementById("age").value
+  var gender=document.querySelector('input[name="one"]:checked').value
+  var studentCourse=document.getElementById("course").value
+  var studentMail=document.getElementById("mail").value
+
+  
+  
+  selectHead.classList.remove("hidden")
+  
+//  class="border border-gray-400" if you wants to add border use this
+  show.innerHTML+=`<tr p-2>
+    <td class="p-2 mb-2" >${studendName}</td>
+     <td class="p-2 mb-2">${studentAge}</td>
+      <td class="p-2 mb-2" >${gender}</td>
+       <td class="p-2 mb-2">${studentCourse}</td>
+       <td class="p-2 mb-2">${studentMail}</td>
+       <td><button class="delete-btn bg-red-400 p-1 rounded-xl mb-2">Delete</button></td>
+    </tr>`
+     // Remove content from box after save
+   
+  var studendName=document.getElementById("stuName").value=" "
+  var studentAge=document.getElementById("age").value= " "
+  var studentMail=document.getElementById("mail").value=" "
+  }
+// Delete the saved information
+
+ document.getElementById("savedStudent").addEventListener("click", function (event) { 
+        event.target.closest("tr").remove()
+      })
+
+    
+
+
+   
+      
+
+    
+
+  </script>
+
+</body>
+</html>
