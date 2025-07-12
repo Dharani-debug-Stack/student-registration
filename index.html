@@ -152,6 +152,14 @@
    </div>
 
 
+ <!-- footer -->
+   <footer class="mt-10 bg-gray-100 text-center text-sm text-gray-600 py-4 border-t border-gray-300">
+  <p>&copy; 2025 Student Manager App. All rights reserved.</p>
+  <p>Made with ❤️ using HTML, Tailwind CSS & JavaScript.</p>
+</footer>
+
+
+
 
   <!-- JavaScript to switch from loading to main -->
   <script>
@@ -176,36 +184,41 @@
   // Saved students
   function show(){
   var selectHead=document.querySelector(".header")
-  var show=document.getElementById("savedStudent")
+
   var studendName=document.getElementById("stuName").value 
   var studentAge=document.getElementById("age").value
   var gender=document.querySelector('input[name="one"]:checked').value
   var studentCourse=document.getElementById("course").value
   var studentMail=document.getElementById("mail").value
-
-  
-  
   selectHead.classList.remove("hidden")
-  
+
+  //check all fields are filled are not
+  studendName.trim() &&
+  studentAge.trim()&&
+  gender.trim()&&  
+  studentCourse.trim()&&
+  studentMail.trim() ?(
 //  class="border border-gray-400" if you wants to add border use this
-  show.innerHTML+=`<tr p-2>
+  document.getElementById("savedStudent").innerHTML+=`<tr p-2>
     <td class="p-2 mb-2" >${studendName}</td>
      <td class="p-2 mb-2">${studentAge}</td>
       <td class="p-2 mb-2" >${gender}</td>
        <td class="p-2 mb-2">${studentCourse}</td>
        <td class="p-2 mb-2">${studentMail}</td>
        <td><button class="delete-btn bg-red-400 p-1 rounded-xl mb-2">Delete</button></td>
-    </tr>`
+    </tr>`,
      // Remove content from box after save
    
-  var studendName=document.getElementById("stuName").value=" "
-  var studentAge=document.getElementById("age").value= " "
-  var studentMail=document.getElementById("mail").value=" "
+  document.getElementById("stuName").value=" ",
+  document.getElementById("age").value= " ",
+  document.getElementById("mail").value=" "):alert ("please fill out all fields")
+  
+
   }
 // Delete the saved information
 
  document.getElementById("savedStudent").addEventListener("click", function (event) { 
-        event.target.closest("tr").remove()
+        confirm("Are you sure you want to delete this row?") && event.target.closest("tr").remove()
       })
 
     
