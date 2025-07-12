@@ -2,7 +2,7 @@
 A simple and beginner-friendly web application to add and manage student information dynamically using HTML, JavaScript, and Tailwind CSS.
 
 📸 Demo
-Live Preview:
+Live Preview: https://dharani-debug-stack.github.io/student-registration/
 
 🚀 Features
 📥 Add new student records with fields: Name, Age, Gender, Course, and Email.
