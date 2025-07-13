@@ -8,8 +8,7 @@
   
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
   <style>
-     
-    .loader {
+     .loader {
       border-top-color: #60A5FA;
       animation: spin 1s linear infinite;
     }
@@ -20,23 +19,11 @@
         transform: rotate(360deg);
       }
     }
-    #showSave{
-     animation: slideRight 2s ease-in-out;
-    }
+   
     @keyframes slideRight {
-      0%{
-        transform: translateX(-100%);
-        opacity: 0;
-      }
-      50%{
-        transform: translateX(0);
-        opacity: 1;
-      }
-      
-      100%{
-        transform: translateX(0);
-        opacity: 1;
-      }
+      0% { transform: translateX(-100%); opacity: 0; }
+      50% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(0); }
     }
     
   </style>
@@ -105,7 +92,7 @@
             <!-- Save -->
           <tr>
             <td colspan="2">
-              <button id="save" type="button" class="text-center bg-gradient-to-r from-blue-500 to-green-400 w-full cursor-pointer" onclick="show()"> Save</button>
+              <button id="save" type="button" class="text-center bg-gradient-to-r from-blue-500 to-green-400 w-full cursor-pointer"> Save</button>
             </td>
           </tr>
         </table>
@@ -146,10 +133,12 @@
   </div>
    
 
-  <!-- Saved Sucessfully -->
-   <div id="showSave"class="hidden bg-green-400 text-white p-4 inline-block rounded-xl absolute top-7">
-    <h2><i class="fa-solid fa-check" style="color: #f4f7fa;"></i> Saved Successfully</h2>
-   </div>
+  <div id="showSave" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+bg-green-500 text-white p-4 text-center rounded shadow-lg z-50 animate-slideRight">
+  ✅ Saved Successfully!
+</div>
+
+
 
    <!-- delete POPUP -->
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-40">
@@ -185,76 +174,103 @@
       document.getElementById("loading").style.display = "none";
       document.getElementById("mainContent").classList.remove("hidden");
     }, 2000); // 3 seconds delay
+    let editRowIndex = null;
 
-  // save sucessfully shown
-   let saveButton=document.getElementById("save")
-    let displaySave=document.getElementById("showSave")
-    saveButton.addEventListener("click",function()
-  {
-    
-    displaySave.classList.remove("hidden")
-    displaySave.style.animation="slideRight 1s ease-in-out"
-    setTimeout(function () {
-      displaySave.classList.add("hidden")
-  
-    },2000)
-    })
-   
- 
-   // Saved students
-  function show(){
-      var selectHead=document.querySelector(".header")
-  var studendName=document.getElementById("stuName").value 
-  var studentAge=document.getElementById("age").value
-  var gender=document.querySelector('input[name="one"]:checked').value
-  var studentCourse=document.getElementById("course").value
-  var studentMail=document.getElementById("mail").value
-  selectHead.classList.remove("hidden")
+    document.getElementById("save").addEventListener("click", function () {
+        var selectHead=document.querySelector(".header")
+        selectHead.classList.remove("hidden")
+      const name = document.getElementById("stuName").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const genderInput = document.querySelector("input[name='one']:checked");
+      const course = document.getElementById("course").value;
+      const mail = document.getElementById("mail").value.trim();
 
-  //check all fields are filled are not
-  studendName.trim() &&
-  studentAge.trim()&&
-  gender.trim()&&  
-  studentCourse.trim()&&
-  studentMail.trim() ?(
-//  class="border border-gray-400" if you wants to add border use this
-  document.getElementById("savedStudent").innerHTML+=`<tr>
-    <td class="p-2 mb-2 " > ${studendName}</td>
-     <td class="p-2 mb-2 ">${studentAge}</td>
-      <td class="p-2 mb-2 " >${gender}</td>
-       <td class="p-2 mb-2 ">${studentCourse}</td>
-       <td class="p-2 mb-2 ">${studentMail}</td>
-       <td><button class="delete-btn bg-red-400 p-1 rounded-xl mb-2">Delete</button></td>
-    </tr>`,
-     // Remove content from box after save
-   
-  document.getElementById("stuName").value=" ",
-  document.getElementById("age").value= " ",
-  document.getElementById("mail").value=" " ):alert ("please fill out all fields")
+      if (!name || !age || !genderInput || !course || !mail) {
+        alert("Please fill all fields.");
+        return;
+      }
 
+      const gender = genderInput.value;
+      const table = document.getElementById("savedStudent");
 
-  
+      if (editRowIndex !== null) {
+        // Update existing row
+        const row = table.rows[editRowIndex];
+        row.cells[0].innerText = name;
+        row.cells[1].innerText = age;
+        row.cells[2].innerText = gender;
+        row.cells[3].innerText = course;
+        row.cells[4].innerText = mail;
+        editRowIndex = null;
+        document.getElementById("save").innerText = "Save";
+      } else {
+        // Add new row
+        const newRow = table.insertRow();
+        newRow.innerHTML = `<tr>
+          <td class="border p-2">${name}</td>
+          <td class="border p-2">${age}</td>
+          <td class="border p-2">${gender}</td>
+          <td class="border p-2">${course}</td>
+          <td class="border p-2">${mail}</td>
+          <td class="border p-2 space-x-2">
+            <button onclick="editStudent(this)" class="bg-yellow-400 px-2 py-1 rounded">Edit</button>
+            <button onclick="deleteStudent(this)" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+          </td></tr>
+        `;
+      }
 
-  }
+      showSuccessMessage();
+      clearForm();
+    });
 
+    function editStudent(button) {
+      const row = button.closest("tr");
+      editRowIndex = row.rowIndex - 1; // skip header
+      const cells = row.getElementsByTagName("td");
 
-  
-// Delete the saved information
+      document.getElementById("stuName").value = cells[0].innerText;
+      document.getElementById("age").value = cells[1].innerText;
+      document.querySelector(`input[name='one'][value="${cells[2].innerText}"]`).checked = true;
+      document.getElementById("course").value = cells[3].innerText;
+      document.getElementById("mail").value = cells[4].innerText;
+
+      document.getElementById("save").innerText = "Update";
+    }
 var delpop=document.getElementById("confirmModal")
- document.getElementById("savedStudent").addEventListener("click", function (event) { 
-  
-  
-         confirm("Are you sure you want to delete this row?") && event.target.closest("tr").remove()
-         
-    delpop.classList.remove("hidden")
-    
-    
-  }) 
-  function hideModel(){
-      delpop.classList.add("hidden")
-  
+    function deleteStudent(button) {
+      if (confirm("Are you sure you want to delete this row?")) {
+        const row = button.closest("tr");
+        row.remove();
+        editRowIndex = null;
+        document.getElementById("save").innerText = "Save";
+        
+      }
+       delpop.classList.remove("hidden") 
     }
 
+    function hideModel(){
+      delpop.classList.add("hidden")
+  }
+
+    function showSuccessMessage() {
+      const message = document.getElementById("showSave");
+      message.classList.remove("hidden");
+      message.style.animation = "slideRight 1s ease-in-out forward";
+
+      setTimeout(() => {
+        message.classList.add("hidden");
+        message.style.animation = "";
+      }, 2000);
+    }
+
+    function clearForm() {
+      document.getElementById("stuName").value = "";
+      document.getElementById("age").value = "";
+      document.getElementById("mail").value = "";
+      document.getElementById("course").value = "";
+      const genderInput = document.querySelector("input[name='one']:checked");
+      if (genderInput) genderInput.checked = false;
+    }
   </script>
 </body>
 </html>
