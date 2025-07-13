@@ -73,7 +73,7 @@
           <!-- Name -->
           <tr>
             <td> Name</td>
-             <td ><input id="stuName" type="text"  placeholder="Enter Your Name" class=" outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100" ></td>
+             <td ><input id="stuName" type="text" required placeholder="Enter Your Name" class=" outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100" ></td>
             </tr>
             <!-- Age -->
           <tr>
@@ -90,7 +90,7 @@
             <td>Course</td>
             <td >
               <select id="course"  class="outline-none border border-blue-300 p-2 rounded-xl bg-gradient-to-r hover:from-green-100 hover:to-blue-100 ">
-            <option value="JavaScript">Javascript</option>
+                <option value="JavaScript">Javascript</option>
             <option value="Java">Java</option>
             <option value="Python">Python</option>
           </select>
@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <!-- Show Saved Container -->
+   <!-- Show Saved Container -->
    <div class=" header hidden flex flex-col flex-wrap items-center">
      <table class="table-auto border border-collapse rounded-xl  text-center shadow-2xl">
 
@@ -151,6 +151,24 @@
     <h2><i class="fa-solid fa-check" style="color: #f4f7fa;"></i> Saved Successfully</h2>
    </div>
 
+   <!-- delete POPUP -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-40">
+  <div class="bg-white p-6 rounded-xl shadow-xl w-80 text-center relative">
+    <div class="text-red-600 text-2xl mb-2">⚠️</div>
+    <h2 class="text-xl font-bold mb-2">Confirm Delete</h2>
+    <p class="text-gray-600 mb-4">You are deleted this student row <br>This action cannot be undone.</p>
+   
+      <button onclick=" hideModel()" class=" absolute top-1 right-1 ">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg> </button>
+
+  </div>
+</div>
+
+
+
+
 
  <!-- footer -->
    <footer class="mt-10 bg-gray-100 text-center text-sm text-gray-600 py-4 border-t border-gray-300">
@@ -158,8 +176,7 @@
   <p>Made with ❤️ using HTML, Tailwind CSS & JavaScript.</p>
 </footer>
 
-</body>
-</html>
+
 
 
   <!-- JavaScript to switch from loading to main -->
@@ -169,23 +186,24 @@
       document.getElementById("mainContent").classList.remove("hidden");
     }, 2000); // 3 seconds delay
 
-    let saveButton=document.getElementById("save")
+  // save sucessfully shown
+   let saveButton=document.getElementById("save")
     let displaySave=document.getElementById("showSave")
     saveButton.addEventListener("click",function()
   {
+    
     displaySave.classList.remove("hidden")
     displaySave.style.animation="slideRight 1s ease-in-out"
     setTimeout(function () {
       displaySave.classList.add("hidden")
   
     },2000)
-    
-  })
+    })
+   
  
-  // Saved students
+   // Saved students
   function show(){
-  var selectHead=document.querySelector(".header")
-
+      var selectHead=document.querySelector(".header")
   var studendName=document.getElementById("stuName").value 
   var studentAge=document.getElementById("age").value
   var gender=document.querySelector('input[name="one"]:checked').value
@@ -200,36 +218,44 @@
   studentCourse.trim()&&
   studentMail.trim() ?(
 //  class="border border-gray-400" if you wants to add border use this
-  document.getElementById("savedStudent").innerHTML+=`<tr p-2>
-    <td class="p-2 mb-2" >${studendName}</td>
-     <td class="p-2 mb-2">${studentAge}</td>
-      <td class="p-2 mb-2" >${gender}</td>
-       <td class="p-2 mb-2">${studentCourse}</td>
-       <td class="p-2 mb-2">${studentMail}</td>
+  document.getElementById("savedStudent").innerHTML+=`<tr>
+    <td class="p-2 mb-2 " > ${studendName}</td>
+     <td class="p-2 mb-2 ">${studentAge}</td>
+      <td class="p-2 mb-2 " >${gender}</td>
+       <td class="p-2 mb-2 ">${studentCourse}</td>
+       <td class="p-2 mb-2 ">${studentMail}</td>
        <td><button class="delete-btn bg-red-400 p-1 rounded-xl mb-2">Delete</button></td>
     </tr>`,
      // Remove content from box after save
    
   document.getElementById("stuName").value=" ",
   document.getElementById("age").value= " ",
-  document.getElementById("mail").value=" "):alert ("please fill out all fields")
+  document.getElementById("mail").value=" " ):alert ("please fill out all fields")
+
+
   
 
   }
+
+
+  
 // Delete the saved information
-
+var delpop=document.getElementById("confirmModal")
  document.getElementById("savedStudent").addEventListener("click", function (event) { 
-        confirm("Are you sure you want to delete this row?") && event.target.closest("tr").remove()
-      })
-
+  
+  
+         confirm("Are you sure you want to delete this row?") && event.target.closest("tr").remove()
+         
+    delpop.classList.remove("hidden")
     
-
-
-   
-      
-
     
+  }) 
+  function hideModel(){
+      delpop.classList.add("hidden")
+  
+    }
 
   </script>
-
+</body>
+</html>
 
